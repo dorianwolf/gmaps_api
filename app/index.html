@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="application.js"></script>
+    <style type="text/css">
+      html, body { height: 100%; margin: 0; padding: 0; }
+      #map { height: 70%; }
+      #places{
+        text-align: center;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="places">
+      <h2>places</h2>
+      <form>
+        <input type="checkbox" name="home" value="home" checked>home<br>
+        <input type="checkbox" name="noahs" value="noahs" checked>Noah's place<br>
+        <input type="checkbox" name="parents" value="parents" checked>Parent's place<br>
+        <input type="checkbox" name="school" value="school" checked>school<br>
+      </form>
+    </div>
+    <script type="text/javascript">
+
+      var map;
+      function initMap() {
+        var theirLatLng = {lat: 43.668780, lng: -79.431127};
+        var myLatLng = {lat: 43.658794, lng: -79.441117};
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 13,
+          center: myLatLng
+        });
+
+        var infoWindow = new google.maps.InfoWindow({map: map});
+
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found.');
+            map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+          infoWindow.setPosition(pos);
+          infoWindow.setContent(browserHasGeolocation ? 'Error: The Geolocation service failed.' : 'Error: Your browser doesn\'t support geolocation.');
+        }
+
+        var home = new google.maps.Marker({
+          position: myLatLng,
+          animation: google.maps.Animation.DROP,
+          map: map,
+          title: "Dorian's house"
+        });
+        var homeInfo = new google.maps.InfoWindow({
+          content: "<div class='info-window'><p>This is my place</p></div>"
+        });
+        home.addListener('click', function() {
+          homeInfo.open(map, home);
+        });
+
+        var school = new google.maps.Marker({
+          position: {lat: 43.647263, lng: -79.403421},
+          animation: google.maps.Animation.DROP,
+          map: map,
+          title: "Dorian's house"
+        });
+        var schoolInfo = new google.maps.InfoWindow({
+          content: "<div class='info-window'><p>This is my school</p></div>"
+        });
+        school.addListener('click', function() {
+          schoolInfo.open(map, school);
+        });
+
+        var oldHome = new google.maps.Marker({
+          position: {lat: 43.671737, lng: -79.333596},
+          animation: google.maps.Animation.DROP,
+          map: map,
+          title: "Dorian's house"
+        });
+        var oldHomeInfo = new google.maps.InfoWindow({
+          content: "<div class='info-window'><p>This is my parent's place</p></div>"
+        });
+        oldHome.addListener('click', function() {
+          oldHomeInfo.open(map, oldHome);
+        });
+
+        var noahs = new google.maps.Marker({
+          position: {lat: 43.659139, lng: -79.416397},
+          animation: google.maps.Animation.DROP,
+          map: map,
+          title: "Dorian's house"
+        });
+        var noahsInfo = new google.maps.InfoWindow({
+          content : "<div class='info-window'><p>This is Noah's place</p></div>"
+        });
+        noahs.addListener('click', function() {
+          noahsInfo.open(map, noahs);
+        });
+      }
+
+    </script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBZ423GxKTuQblr9eheQ64Owk1cO3M6YM&callback=initMap">
+    </script>
+  </body>
+</html>
